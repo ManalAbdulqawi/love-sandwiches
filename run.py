@@ -103,6 +103,21 @@ def calculate_stock_data(data):
         stock_num = average * 1.1
         new_stock_data.append(round(stock_num))
     return new_stock_data
+
+def get_stock_values(data):
+    """
+    Built the code to calculate and insert our recommended stock values into the stock worksheet. 
+    In this challenge you will build a dictionary, 
+    where the keys are the sandwich headings pulled from the spreadsheet,
+    and the values are the calculated stock data.
+    """
+    sales = SHEET.worksheet("sales").get_all_values()
+
+    headings = sales.pop(0)
+    my_dict = {}
+    for head,stock in zip(headings,data):
+        my_dict[head]=stock
+    return my_dict  
 def main():
     """
     Run alll program function
@@ -113,8 +128,10 @@ def main():
     new_surplus_data = calculate_surplus_data(sales_data)
     update_worksheet(new_surplus_data,"surplus")
     sales_columns = get_last_5_entries_sales()
-    stock_data =calculate_stock_data(sales_columns)
-    print(stock_data)
+    stock_data = calculate_stock_data(sales_columns)
+    stock_values = get_stock_values(stock_data)
+    print("Make the following numbers of sandwiches for next market:\n")
+    print(stock_values)
 
 print("Welcom to Love Sandwich Data Atuomation")    
 main()   
